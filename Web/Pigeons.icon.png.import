@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Pigeons.icon.png-be81ff80d6ab8b03c09bf42df66f9644.stex"
+path="res://.import/Pigeons.icon.png-2c08d164ce1d6a448c1df8a1aaebe48b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Pigeons/Web/Pigeons.icon.png"
-dest_files=[ "res://.import/Pigeons.icon.png-be81ff80d6ab8b03c09bf42df66f9644.stex" ]
+source_file="res://Web/Pigeons.icon.png"
+dest_files=[ "res://.import/Pigeons.icon.png-2c08d164ce1d6a448c1df8a1aaebe48b.stex" ]
 
 [params]
 

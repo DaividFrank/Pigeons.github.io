@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Pigeons.png-97b585bd59c2b0f1832292a86c95cee1.stex"
+path="res://.import/Pigeon death 2.png-63d5397c191dd95fc8587bc86f60edea.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Web/Pigeons.png"
-dest_files=[ "res://.import/Pigeons.png-97b585bd59c2b0f1832292a86c95cee1.stex" ]
+source_file="res://Assets/New/Pigeon death 2.png"
+dest_files=[ "res://.import/Pigeon death 2.png-63d5397c191dd95fc8587bc86f60edea.stex" ]
 
 [params]
 

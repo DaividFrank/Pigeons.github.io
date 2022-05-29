@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Pigeons.png-97b585bd59c2b0f1832292a86c95cee1.stex"
+path="res://.import/Pigeon 3 fat pooping.png-e595b0722b85cfa5e7cfc6f2129b7fa0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Web/Pigeons.png"
-dest_files=[ "res://.import/Pigeons.png-97b585bd59c2b0f1832292a86c95cee1.stex" ]
+source_file="res://Assets/New/Pigeon 3 fat pooping.png"
+dest_files=[ "res://.import/Pigeon 3 fat pooping.png-e595b0722b85cfa5e7cfc6f2129b7fa0.stex" ]
 
 [params]
 

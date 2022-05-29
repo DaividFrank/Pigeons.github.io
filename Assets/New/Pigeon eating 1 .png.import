@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Pigeons.png-97b585bd59c2b0f1832292a86c95cee1.stex"
+path="res://.import/Pigeon eating 1 .png-4e43eb8caacc4b87897b9287a0b618dd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Web/Pigeons.png"
-dest_files=[ "res://.import/Pigeons.png-97b585bd59c2b0f1832292a86c95cee1.stex" ]
+source_file="res://Assets/New/Pigeon eating 1 .png"
+dest_files=[ "res://.import/Pigeon eating 1 .png-4e43eb8caacc4b87897b9287a0b618dd.stex" ]
 
 [params]
 
