@@ -54,7 +54,7 @@ func move_pigeon(delta):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if stop or !can_move or feeds == 5:
+	if stop or !can_move or feeds == 4:
 		return
 	move_pigeon(delta)
 	timer -= delta
@@ -80,6 +80,7 @@ func dead():
 	_ok = pigeon_tween.interpolate_property(self, "can_move", false, true, 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	pigeon_tween.start()
 	$Pigeon/AnimationPlayer.play("Idle1")
+	$Pigeon/AnimationPlayer.seek(0)
 	bodies += 1
 	stop = false
 
@@ -94,10 +95,8 @@ func poop():
 	stop_feed()
 
 func pigeon_poop():
-	var anim_feeds = feeds
-	if feeds == 5:
-		anim_feeds -= 1
-	$Pigeon/AnimationPlayer.play("Pooping{num}".format({"num": anim_feeds}))
+	if feeds < 4:
+		$Pigeon/AnimationPlayer.play("Pooping{num}".format({"num": feeds + 1}))
 	tween.interpolate_callback(self, 1.5, "poop")
 	tween.start()
 	# if get_node_or_null("Stain%d" % stain) != null:
@@ -106,7 +105,7 @@ func pigeon_poop():
 
 func feed():
 	feeds += 1
-	if feeds / 6 == 1:
+	if feeds / 5 == 1:
 		$Pigeon/AnimationPlayer.play("Die")
 		stop = true
 		tween.interpolate_callback(self, 3, "dead")
@@ -114,10 +113,7 @@ func feed():
 		feeds = 0
 		return
 	tween.interpolate_callback(self, 1.5, "pigeon_poop")
-	var anim_feeds = feeds
-	if feeds == 5:
-		anim_feeds -= 1
-	$Pigeon/AnimationPlayer.play("Eat{num}".format({"num": anim_feeds}))
+	$Pigeon/AnimationPlayer.play("Eat{num}".format({"num": feeds}))
 	# if feeds % 3 == 0:
 	# if feeds % 3 == 1:
 	# 	$Pigeon/AnimationPlayer.play("Eat1")
@@ -135,7 +131,7 @@ func stop_feed():
 		scnd_tween.start()
 		stop = true
 	else:
-		$Pigeon/AnimationPlayer.play("Idle{num}".format({"num": feeds}))
+		$Pigeon/AnimationPlayer.play("Idle{num}".format({"num": feeds + 1}))
 		stop = false
 
 func _on_Feed_pressed():
