@@ -13,7 +13,7 @@ var twice := true
 var stain := 0
 var stop = false
 var bodies := 0
-var timer := 1.0
+var timer := 3.0
 var can_move := true
 var hor_dir = pow(-1, randi() % 2)
 var ver_dir = pow(-1, randi() % 2)
@@ -25,7 +25,7 @@ const VER_MAX = 1190
 const BODY_VER_BASE = 1000
 const BODY_VER_STEP = 200
 const BODY_HOR_BASE = 150
-const BODY_HOR_STEP = 215
+const BODY_HOR_STEP = 430
 
 
 # Declare member variables here. Examples:
@@ -77,13 +77,14 @@ func _process(delta):
 	if timer <= 0:
 		hor_dir = pow(-1, randi() % 2)
 		ver_dir = pow(-1, randi() % 2)
-		timer = 1.0
+		$Pigeon/Sprite.flip_h = hor_dir > 0
+		timer = 3.0
 
 func dead():
 	var body = BodyScene.instance()
 	$Bodies.add_child(body)
-	var body_pos = Vector2(BODY_HOR_BASE + (BODY_HOR_STEP * (bodies % 3)),
-						   BODY_VER_BASE - (BODY_VER_STEP * (int(bodies / 3.0))))
+	var body_pos = Vector2(BODY_HOR_BASE + (BODY_HOR_STEP * (bodies % 2)),
+						   BODY_VER_BASE - (BODY_VER_STEP * (int(bodies / 2.0))))
 	var _ok = body_tween.interpolate_property(body, "global_position", $Pigeon.global_position, body_pos, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	body_tween.start()
 	restart_pigeon()
