@@ -44,7 +44,7 @@ func _ready():
 	add_child(body_tween)
 	add_child(pigeon_tween)
 
-	tween.interpolate_property($BG, "global_position", Vector2(360, 2100), Vector2(360,-800), 10, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property($BG, "global_position", Vector2(0, 0), Vector2(0,-2900), 10, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_property($Feed, "visible", false, true, 20, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_property($Pigeon, "visible", false, true, 20.3, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_callback(self, 10, "restart_pigeon")

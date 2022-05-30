@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Assets/New/food.png" type="Texture" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -10,9 +10,15 @@
 [ext_resource path="res://Assets/poop 2-05.png" type="Texture" id=8]
 [ext_resource path="res://Assets/poop 3-05.png" type="Texture" id=9]
 [ext_resource path="res://Assets/poop 4-05.png" type="Texture" id=10]
-[ext_resource path="res://Assets/New/NEW BG.png" type="Texture" id=11]
+[ext_resource path="res://Assets/New/טמגוצ׳י התקדמות-08.png" type="Texture" id=11]
 [ext_resource path="res://SFX/bread-sound.ogg" type="AudioStream" id=12]
 [ext_resource path="res://SFX/General Sound.wav" type="AudioStream" id=13]
+[ext_resource path="res://Assets/New/טמגוצ׳י התקדמות-09.png" type="Texture" id=14]
+[ext_resource path="res://Assets/New/טמגוצ׳י התקדמות-10.png" type="Texture" id=15]
+
+[sub_resource type="StreamTexture" id=1]
+flags = 4
+load_path = "res://.import/NEW BG.png-f1d76b86c47d1ffb0eeafe10f66aa77f.stex"
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -30,15 +36,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BG" type="Sprite" parent="."]
-position = Vector2( 360, 2100 )
+[node name="BG" type="Node2D" parent="."]
+
+[node name="BG1" type="Sprite" parent="BG"]
+position = Vector2( 360, 645 )
 texture = ExtResource( 11 )
+
+[node name="BG2" type="Sprite" parent="BG"]
+position = Vector2( 360, 1925.5 )
+texture = ExtResource( 14 )
+
+[node name="BG3" type="Sprite" parent="BG"]
+position = Vector2( 360, 3400 )
+texture = ExtResource( 15 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 margin_right = 721.0
 margin_bottom = 4207.0
-texture = ExtResource( 11 )
+texture = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
