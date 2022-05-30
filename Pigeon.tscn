@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Assets/New/Pigeon eating  2.png" type="Texture" id=1]
 [ext_resource path="res://Assets/New/Pigeon 2 fat pooping  2.png" type="Texture" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://Assets/New/Pigeon 4 far resting .png" type="Texture" id=13]
 [ext_resource path="res://Assets/New/Pigeon death 2.png" type="Texture" id=14]
 [ext_resource path="res://Assets/New/Pigeon 5 fat resting .png" type="Texture" id=15]
+[ext_resource path="res://SFX/Grr Grr.wav" type="AudioStream" id=16]
 
 [sub_resource type="Animation" id=6]
 resource_name = "Die"
@@ -339,6 +340,18 @@ tracks/4/keys = {
 "update": 0,
 "values": [ 0, 5 ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("SFX:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=10]
 resource_name = "Idle2"
@@ -402,6 +415,18 @@ tracks/4/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ 0, 7 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("SFX:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -467,6 +492,18 @@ tracks/4/keys = {
 "update": 0,
 "values": [ 0, 7 ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("SFX:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=16]
 resource_name = "Idle4"
@@ -531,6 +568,18 @@ tracks/4/keys = {
 "update": 0,
 "values": [ 0, 7 ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("SFX:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=17]
 resource_name = "Idle5"
@@ -594,6 +643,18 @@ tracks/4/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ 0, 7 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("SFX:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -809,9 +870,9 @@ script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 z_index = 1
-texture = ExtResource( 4 )
-hframes = 8
-vframes = 3
+texture = ExtResource( 15 )
+hframes = 7
+frame = 7
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Die = SubResource( 6 )
@@ -828,3 +889,6 @@ anims/Pooping1 = SubResource( 7 )
 anims/Pooping2 = SubResource( 9 )
 anims/Pooping3 = SubResource( 13 )
 anims/Pooping4 = SubResource( 14 )
+
+[node name="SFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 16 )

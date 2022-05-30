@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/New/food.png" type="Texture" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -10,7 +10,9 @@
 [ext_resource path="res://Assets/poop 2-05.png" type="Texture" id=8]
 [ext_resource path="res://Assets/poop 3-05.png" type="Texture" id=9]
 [ext_resource path="res://Assets/poop 4-05.png" type="Texture" id=10]
-[ext_resource path="res://Assets/New/BG.png" type="Texture" id=12]
+[ext_resource path="res://Assets/New/NEW BG.png" type="Texture" id=11]
+[ext_resource path="res://SFX/bread-sound.ogg" type="AudioStream" id=12]
+[ext_resource path="res://SFX/General Sound.wav" type="AudioStream" id=13]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -28,10 +30,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="BG" type="Sprite" parent="."]
+position = Vector2( 360, 2100 )
+texture = ExtResource( 11 )
+
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 margin_right = 721.0
-margin_bottom = 1281.0
-texture = ExtResource( 12 )
+margin_bottom = 4207.0
+texture = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -52,18 +59,6 @@ position = Vector2( 360, 730 )
 
 [node name="EndFood" type="Position2D" parent="Pigeon"]
 position = Vector2( 70, -53 )
-
-[node name="Pigeon2" parent="." instance=ExtResource( 3 )]
-position = Vector2( -158, 747 )
-
-[node name="Pigeon5" parent="." instance=ExtResource( 3 )]
-position = Vector2( -343, 732 )
-
-[node name="Pigeon3" parent="." instance=ExtResource( 3 )]
-position = Vector2( 884, 732 )
-
-[node name="Pigeon4" parent="." instance=ExtResource( 3 )]
-position = Vector2( 1059, 732 )
 
 [node name="LeftSpawn" type="Position2D" parent="."]
 position = Vector2( -252, 731 )
@@ -183,5 +178,16 @@ limit_right = 720
 limit_bottom = 1200
 
 [node name="Bodies" type="Node" parent="."]
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 360, 2100 )
+stream = ExtResource( 13 )
+volume_db = 10.0
+autoplay = true
+
+[node name="BreadSFX" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 360, 2100 )
+stream = ExtResource( 12 )
+volume_db = -2.0
 
 [connection signal="pressed" from="Feed" to="." method="_on_Feed_pressed"]

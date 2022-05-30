@@ -44,6 +44,22 @@ func _ready():
 	add_child(body_tween)
 	add_child(pigeon_tween)
 
+	tween.interpolate_property($BG, "global_position", Vector2(360, 2100), Vector2(360,-800), 10, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property($Feed, "visible", false, true, 20, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property($Pigeon, "visible", false, true, 20.3, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_callback(self, 10, "restart_pigeon")
+	tween.start()
+
+func restart_pigeon():
+	var spawn = $LeftSpawn
+	if randi() % 2:
+		spawn = $RightSpawn
+	var _ok = pigeon_tween.interpolate_property($Pigeon, "global_position", spawn.global_position, $PigeonLoc.global_position, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	_ok = pigeon_tween.interpolate_property(self, "stop", true, false, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	_ok = pigeon_tween.interpolate_property(self, "can_move", false, true, 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	pigeon_tween.start()
+	$Pigeon/AnimationPlayer.play("Idle1")
+	$Pigeon/AnimationPlayer.seek(0)
 
 func move_pigeon(delta):
 	randomize()
@@ -64,23 +80,13 @@ func _process(delta):
 		timer = 1.0
 
 func dead():
-	var spawn = $LeftSpawn
-	if randi() % 2:
-		spawn = $RightSpawn
-
 	var body = BodyScene.instance()
 	$Bodies.add_child(body)
 	var body_pos = Vector2(BODY_HOR_BASE + (BODY_HOR_STEP * (bodies % 3)),
 						   BODY_VER_BASE - (BODY_VER_STEP * (int(bodies / 3.0))))
 	var _ok = body_tween.interpolate_property(body, "global_position", $Pigeon.global_position, body_pos, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	body_tween.start()
-
-	_ok = pigeon_tween.interpolate_property($Pigeon, "global_position", spawn.global_position, $PigeonLoc.global_position, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	_ok = pigeon_tween.interpolate_property(self, "stop", true, false, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	_ok = pigeon_tween.interpolate_property(self, "can_move", false, true, 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	pigeon_tween.start()
-	$Pigeon/AnimationPlayer.play("Idle1")
-	$Pigeon/AnimationPlayer.seek(0)
+	restart_pigeon()
 	bodies += 1
 	stop = false
 
@@ -137,6 +143,7 @@ func stop_feed():
 func _on_Feed_pressed():
 	if stop:
 		return
+	$BreadSFX.play()
 	tween.interpolate_property($Feed, "disabled", true, false, 1.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_property($Food, "global_position", $StartFood.global_position, $Pigeon/EndFood.global_position, 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_property($Food, "visible", true, false, 1, Tween.TRANS_CUBIC, Tween.EASE_IN)

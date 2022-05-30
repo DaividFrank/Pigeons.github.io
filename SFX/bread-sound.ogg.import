@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bread-sound.ogg-c3200b71441c3ac248c2bdf7917d0f1a.oggstr"
+
+[deps]
+
+source_file="res://SFX/bread-sound.ogg"
+dest_files=[ "res://.import/bread-sound.ogg-c3200b71441c3ac248c2bdf7917d0f1a.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
