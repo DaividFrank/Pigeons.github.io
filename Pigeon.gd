@@ -17,3 +17,13 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_Timer_timeout():
+	$SFX.play(0)
+	$Timer2.start()
+
+
+func _on_Timer2_timeout():
+	$SFX.stop()
+	$Timer.start()

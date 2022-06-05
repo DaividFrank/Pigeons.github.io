@@ -2,6 +2,7 @@ extends Control
 
 onready var PoopScene = preload("res://Poop.tscn")
 onready var BodyScene = preload("res://Body.tscn")
+onready var GhostScene = preload("res://Ghost.tscn")
 
 var tween : Tween
 var scnd_tween : Tween
@@ -44,7 +45,16 @@ func _ready():
 	add_child(body_tween)
 	add_child(pigeon_tween)
 
-	tween.interpolate_property($BG, "global_position", Vector2(0, 0), Vector2(0,-2900), 10, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_callback(self, 2, "start_scroll")
+	tween.start()
+
+func start_scroll():
+	tween.interpolate_property($BG, "global_position", Vector2(0, 0), Vector2(0,-1000), 3, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_callback(self, 5, "finish_scroll")
+	tween.start()
+	
+func finish_scroll():
+	tween.interpolate_property($BG, "global_position", $BG.global_position, Vector2(0,-2900), 10, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_property($Feed, "visible", false, true, 20, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_property($Pigeon, "visible", false, true, 20.3, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	tween.interpolate_callback(self, 10, "restart_pigeon")
@@ -60,11 +70,18 @@ func restart_pigeon():
 	pigeon_tween.start()
 	$Pigeon/AnimationPlayer.play("Idle1")
 	$Pigeon/AnimationPlayer.seek(0)
+	$Pigeon.get_node("Timer").start()
+
+func change_pigeon_dir():
+	hor_dir = pow(-1, randi() % 2)
+	ver_dir = pow(-1, randi() % 2)
+	$Pigeon.scale.x = -1 if hor_dir > 0 else 1
 
 func move_pigeon(delta):
 	randomize()
 	var new_position = $Pigeon.global_position + (delta * Vector2(hor_dir * int(rand_range(1,25)), ver_dir * int(rand_range(1,25))))
 	while new_position.x < HOR_MIN or new_position.x > HOR_MAX or new_position.y < VER_MIN or new_position.y > VER_MAX:
+		change_pigeon_dir()
 		new_position = $Pigeon.global_position + (delta * Vector2(hor_dir * int(rand_range(1,25)), ver_dir * int(rand_range(1,25))))
 	$Pigeon.global_position = new_position
 
@@ -75,27 +92,35 @@ func _process(delta):
 	move_pigeon(delta)
 	timer -= delta
 	if timer <= 0:
-		hor_dir = pow(-1, randi() % 2)
-		ver_dir = pow(-1, randi() % 2)
-		$Pigeon/Sprite.flip_h = hor_dir > 0
+		change_pigeon_dir()
 		timer = 3.0
 
 func dead():
 	var body = BodyScene.instance()
+	var ghost = GhostScene.instance()
 	$Bodies.add_child(body)
-	var body_pos = Vector2(BODY_HOR_BASE + (BODY_HOR_STEP * (bodies % 2)),
-						   BODY_VER_BASE - (BODY_VER_STEP * (int(bodies / 2.0))))
-	var _ok = body_tween.interpolate_property(body, "global_position", $Pigeon.global_position, body_pos, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$Bodies.add_child(ghost)
+	ghost.global_position = $Pigeon.global_position
+	body.global_position = $Pigeon.global_position
+	body.scale = $Pigeon.scale
+	body.get_node("AnimationPlayer").play("fade")
+	var _ok = body_tween.interpolate_callback(body, 5, "queue_free")
+	#var body_pos = Vector2(BODY_HOR_BASE + (BODY_HOR_STEP * (bodies % 2)),
+	#					   BODY_VER_BASE - (BODY_VER_STEP * (int(bodies / 2.0))))
+	#var _ok = body_tween.interpolate_property(body, "global_position", $Pigeon.global_position, body_pos, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	body_tween.start()
 	restart_pigeon()
-	bodies += 1
+	#bodies += 1
 	stop = false
 
 func poop():
 	var poop = PoopScene.instance()
-	poop.get_node("AnimationPlayer").play("{num}".format({"num":  randi() % 3}))
+	poop.get_node("AnimationPlayer").play("{num}".format({"num":  (randi() % 3) + 1}))
 	$Poops.add_child(poop)
-	poop.global_position = $Pigeon.global_position
+	var pigeon_pos = $Pigeon.global_position
+	if $Pigeon.scale.x == -1:
+		pigeon_pos -= Vector2(50, 0)
+	poop.global_position = pigeon_pos
 	# scnd_tween.interpolate_property($Poop, "visible", true, false, 1, Tween.TRANS_CUBIC, Tween.EASE_IN)
 	# scnd_tween.interpolate_property($Poop, "global_position", $StartPoop.global_position, $EndPoop.global_position, 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	# scnd_tween.start()
@@ -145,9 +170,10 @@ func _on_Feed_pressed():
 	if stop:
 		return
 	$BreadSFX.play()
+	var food_pos = -88 if $Pigeon.scale.x == 1 else 200
 	tween.interpolate_property($Feed, "disabled", true, false, 1.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	tween.interpolate_property($Food, "global_position", $StartFood.global_position, $Pigeon/EndFood.global_position, 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	tween.interpolate_property($Food, "visible", true, false, 1, Tween.TRANS_CUBIC, Tween.EASE_IN)
+	tween.interpolate_property($Food, "global_position", $StartFood.global_position, $Pigeon.global_position + Vector2(food_pos, 0), 1.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property($Food, "visible", true, false, 1.5, Tween.TRANS_CUBIC, Tween.EASE_IN)
 	tween.interpolate_callback(self, 0.75, "feed")
 	stop = true
 	tween.start()
