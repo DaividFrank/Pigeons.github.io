@@ -9,6 +9,7 @@ const HOR_MAX = 590
 const VER_MIN = 180
 const VER_MAX = 1190
 var timer := 2.0
+var can_move := false
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -33,6 +34,8 @@ func move_ghost(delta):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if !can_move:
+		return
 	move_ghost(delta)
 	timer -= delta
 	if timer <= 0:
