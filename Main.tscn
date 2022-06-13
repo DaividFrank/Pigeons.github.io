@@ -913,4 +913,15 @@ volume_db = -2.0
 visible = false
 position = Vector2( 360, -97 )
 
+[node name="Button" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -37.0
+margin_top = -28.0
+margin_right = 782.0
+margin_bottom = 1299.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="Feed" to="." method="_on_Feed_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

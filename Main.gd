@@ -21,6 +21,8 @@ var ver_dir = pow(-1, randi() % 2)
 var first_win := false
 var feed_time := 0.0
 var first_pigeon := true
+var LastGhost
+var press_once := false
 
 const WIN_TIME = 30.0
 
@@ -57,9 +59,6 @@ func _ready():
 	$Music.play()
 	$BG/AnimationPlayer.play("Play")
 
-	var _ok = tween.interpolate_callback(self, 2, "start_scroll")
-	_ok = tween.start()
-
 func start_scroll():
 	var _ok = tween.interpolate_property($BG, "global_position", Vector2(0, 0), Vector2(0,-1200), 4, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	_ok = tween.interpolate_callback(self, 6.3, "finish_scroll")
@@ -74,6 +73,7 @@ func finish_scroll():
 
 
 func restart_bread():
+	stop = true
 	$Feed.visible = true
 	$Feed/AnimationPlayer.play("Mov")
 
@@ -92,13 +92,12 @@ func restart_pigeon():
 	$Pigeon.scale.x = -1 if spawn == $LeftSpawn else 1
 	var _ok = pigeon_tween.interpolate_property($Pigeon, "global_position", spawn.global_position, $PigeonLoc.global_position, mov_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	_ok = pigeon_tween.interpolate_property($Pigeon, "visible", false, true, 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	_ok = pigeon_tween.interpolate_property(self, "stop", true, false, mov_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	_ok = pigeon_tween.interpolate_property(self, "stop", true, false, mov_time + extra_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	_ok = pigeon_tween.interpolate_property(self, "can_move", false, true, mov_time + extra_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	_ok = pigeon_tween.interpolate_callback($Pigeon/SFX, 0.5, "play")
+	_ok = pigeon_tween.interpolate_callback($Pigeon/Timer2, 1, "start")
 	_ok = pigeon_tween.start()
 	$Pigeon/AnimationPlayer.play("Idle1")
-	$Pigeon/AnimationPlayer.seek(0)
-	$Pigeon/SFX.play(0)
-	$Pigeon.get_node("Timer").start()
 
 func change_pigeon_dir():
 	hor_dir = pow(-1, randi() % 2)
@@ -148,7 +147,7 @@ func _process(delta):
 		win()
 		stop = true
 		return
-	if feeds == 0:
+	if feeds == 0 and press_once:
 		feed_time += delta
 	if stop or !can_move or feeds == 4:
 		return
@@ -158,9 +157,9 @@ func _process(delta):
 		change_pigeon_dir()
 		timer = 3.0
 
-func start_ghost(ghost):
-	ghost.get_node("AnimationPlayer").play("Idle")
-	ghost.can_move = true
+func start_ghost():
+	LastGhost.get_node("AnimationPlayer").play("Idle")
+	LastGhost.can_move = true
 
 
 func dead():
@@ -168,6 +167,7 @@ func dead():
 	var ghost = GhostScene.instance()
 	$Hearts/AnimationPlayer.play("Disappear")
 	$Bodies.add_child(body)
+	$Bodies.add_child(ghost)
 	var mov = Vector2(-20, -300)
 	mov.x *= $Pigeon.scale.x
 	ghost.global_position = $Pigeon.global_position + mov
@@ -175,11 +175,12 @@ func dead():
 	body.scale = $Pigeon.scale
 	ghost.visible = false
 	ghost.get_node("AnimationPlayer").play("Spawn")
-	body.get_node("AnimationPlayer").play("fade")
+	ghost.scale = $Pigeon.scale * 2
 	ghost.z_index = 1
-	$Bodies.add_child(ghost)
+	body.get_node("AnimationPlayer").play("fade")
+	LastGhost = ghost
 	var _ok = body_tween.interpolate_callback(body, 5, "queue_free")
-	_ok = body_tween.interpolate_callback(self, 2, "start_ghost", ghost)
+	_ok = body_tween.interpolate_callback(self, 2, "start_ghost")
 	#var body_pos = Vector2(BODY_HOR_BASE + (BODY_HOR_STEP * (bodies % 2)),
 	#					   BODY_VER_BASE - (BODY_VER_STEP * (int(bodies / 2.0))))
 	#var _ok = body_tween.interpolate_property(body, "global_position", $Pigeon.global_position, body_pos, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
@@ -189,7 +190,6 @@ func dead():
 	_ok = scnd_tween.interpolate_callback($Hearts/AnimationPlayer, 3, "play", "Show")
 	_ok = scnd_tween.start()
 	#bodies += 1
-	stop = false
 
 func poop():
 	var poop = PoopScene.instance()
@@ -228,7 +228,6 @@ func feed():
 	feeds += 1
 	if feeds / 5 == 1:
 		$Pigeon/AnimationPlayer.play("Die")
-		stop = true
 		tween.interpolate_callback(self, 3, "dead")
 		tween.start()
 		feeds = 0
@@ -247,9 +246,9 @@ func stop_feed():
 		feeds = 50
 		$Pigeon/AnimationPlayer.play("Die")
 		# BRING PIGEON 4 5
-		scnd_tween.interpolate_property($Pigeon4, "global_position", $Pigeon4.global_position, $Pigeon4.global_position + Vector2(-280, 0), 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
-		scnd_tween.interpolate_property($Pigeon5, "global_position", $Pigeon5.global_position, $Pigeon5.global_position + Vector2(265, 0), 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
-		scnd_tween.start()
+		# scnd_tween.interpolate_property($Pigeon4, "global_position", $Pigeon4.global_position, $Pigeon4.global_position + Vector2(-280, 0), 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
+		# scnd_tween.interpolate_property($Pigeon5, "global_position", $Pigeon5.global_position, $Pigeon5.global_position + Vector2(265, 0), 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
+		# scnd_tween.start()
 		stop = true
 	else:
 		$Pigeon/AnimationPlayer.play("Idle{num}".format({"num": feeds + 1}))
@@ -259,6 +258,7 @@ func _on_Feed_pressed():
 	feed_time = 0.0
 	if stop:
 		return
+	pigeon_tween.stop_all()
 	$BreadSFX.play()
 	var food_pos = -88 if $Pigeon.scale.x == 1 else 200
 	tween.interpolate_property($Feed, "disabled", true, false, 1.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
@@ -293,3 +293,13 @@ func old_feed():
 	if feeds / 3 == 3:
 		$Pigeon/AnimationPlayer.play("Eat3")
 	scnd_tween.start()
+
+func _on_Button_pressed():
+	if press_once:
+		return
+	else:
+		press_once = true
+		$Button.visible = false
+	$Music.play()
+	var _ok = tween.interpolate_callback(self, 2, "start_scroll")
+	_ok = tween.start()
