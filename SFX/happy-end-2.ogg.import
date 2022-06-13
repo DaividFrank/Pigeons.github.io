@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/happy-end-2.ogg-bcce67883e2ad8f3972bf5c817fd74c2.oggstr"
+
+[deps]
+
+source_file="res://SFX/happy-end-2.ogg"
+dest_files=[ "res://.import/happy-end-2.ogg-bcce67883e2ad8f3972bf5c817fd74c2.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/win confetti.mp3-44ee6efc7f95d9467f323c6c85e2c061.mp3str"
+
+[deps]
+
+source_file="res://SFX/win confetti.mp3"
+dest_files=[ "res://.import/win confetti.mp3-44ee6efc7f95d9467f323c6c85e2c061.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

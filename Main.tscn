@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Assets/New/food.png" type="Texture" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -10,14 +10,59 @@
 [ext_resource path="res://Assets/poop 2-05.png" type="Texture" id=8]
 [ext_resource path="res://Assets/poop 3-05.png" type="Texture" id=9]
 [ext_resource path="res://Assets/poop 4-05.png" type="Texture" id=10]
-[ext_resource path="res://Assets/New/טמגוצ׳י התקדמות-08.png" type="Texture" id=11]
+[ext_resource path="res://Assets/New/NEWBG/bg 3-04.png" type="Texture" id=11]
 [ext_resource path="res://SFX/bread-sound.ogg" type="AudioStream" id=12]
 [ext_resource path="res://SFX/General Sound.wav" type="AudioStream" id=13]
-[ext_resource path="res://Assets/New/טמגוצ׳י התקדמות-09.png" type="Texture" id=14]
-[ext_resource path="res://Assets/New/טמגוצ׳י התקדמות-10.png" type="Texture" id=15]
+[ext_resource path="res://Assets/New/NEWBG/bg-05.png" type="Texture" id=14]
+[ext_resource path="res://Assets/New/NEWBG/bg-06.png" type="Texture" id=15]
 [ext_resource path="res://Assets/New/Heart full.png" type="Texture" id=16]
 [ext_resource path="res://Assets/New/heart.png" type="Texture" id=17]
-[ext_resource path="res://Assets/New/heart small.png" type="Texture" id=18]
+[ext_resource path="res://Confetti.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Assets/New/NEWBG/bg-01.png" type="Texture" id=19]
+[ext_resource path="res://Assets/New/NEWBG/bg-02.png" type="Texture" id=20]
+[ext_resource path="res://Assets/New/NEWBG/bg-03.png" type="Texture" id=21]
+[ext_resource path="res://SFX/happy-end-2.ogg" type="AudioStream" id=22]
+
+[sub_resource type="Animation" id=11]
+resource_name = "Play"
+length = 2.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("BG1:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 19 ), ExtResource( 15 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("BG2:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 20 ), ExtResource( 11 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BG3:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 21 ), ExtResource( 14 ) ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "Del1"
@@ -483,7 +528,7 @@ tracks/10/keys = {
 "times": PoolRealArray( 0.1 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 18 ) ]
+"values": [ ExtResource( 16 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("Second:texture")
@@ -495,7 +540,7 @@ tracks/11/keys = {
 "times": PoolRealArray( 0.1 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 18 ) ]
+"values": [ ExtResource( 16 ) ]
 }
 tracks/12/type = "value"
 tracks/12/path = NodePath("Third:texture")
@@ -597,6 +642,22 @@ tracks/19/keys = {
 [sub_resource type="StreamTexture" id=1]
 flags = 4
 
+[sub_resource type="Animation" id=10]
+resource_name = "Exit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 300, 1083 ), Vector2( -252, 1083 ) ]
+}
+
 [sub_resource type="Animation" id=2]
 resource_name = "Mov"
 length = 0.3
@@ -630,28 +691,33 @@ __meta__ = {
 }
 
 [node name="BG" type="Node2D" parent="."]
+position = Vector2( 0, -2 )
 
 [node name="BG1" type="Sprite" parent="BG"]
 position = Vector2( 360, 645 )
-texture = ExtResource( 11 )
+texture = ExtResource( 15 )
 
 [node name="BG2" type="Sprite" parent="BG"]
 position = Vector2( 360, 1925.5 )
-texture = ExtResource( 14 )
+texture = ExtResource( 11 )
 
 [node name="BG3" type="Sprite" parent="BG"]
 position = Vector2( 360, 3400 )
-texture = ExtResource( 15 )
+texture = ExtResource( 14 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BG"]
+anims/Play = SubResource( 11 )
 
 [node name="Hearts" type="Node2D" parent="."]
+position = Vector2( 0, 17 )
 
 [node name="First" type="Sprite" parent="Hearts"]
 position = Vector2( 175, 150 )
-texture = ExtResource( 18 )
+texture = ExtResource( 16 )
 
 [node name="Second" type="Sprite" parent="Hearts"]
 position = Vector2( 300, 150 )
-texture = ExtResource( 18 )
+texture = ExtResource( 16 )
 
 [node name="Third" type="Sprite" parent="Hearts"]
 position = Vector2( 425, 150 )
@@ -743,6 +809,7 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Feed"]
+anims/Exit = SubResource( 10 )
 anims/Mov = SubResource( 2 )
 
 [node name="Stain0" type="Sprite" parent="."]
@@ -827,15 +894,23 @@ limit_bottom = 1200
 
 [node name="Bodies" type="Node" parent="."]
 
+[node name="WinMusic" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 360, 2100 )
+stream = ExtResource( 22 )
+volume_db = 20.0
+
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 360, 2100 )
 stream = ExtResource( 13 )
 volume_db = 24.0
-autoplay = true
 
 [node name="BreadSFX" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 360, 2100 )
 stream = ExtResource( 12 )
 volume_db = -2.0
+
+[node name="Confetti" parent="." instance=ExtResource( 18 )]
+visible = false
+position = Vector2( 360, -97 )
 
 [connection signal="pressed" from="Feed" to="." method="_on_Feed_pressed"]
